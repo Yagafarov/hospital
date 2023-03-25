@@ -1,9 +1,10 @@
 <?php
-    session_start();
     $dpHost = 'localhost';
-    $dbName = 'anodra';
     $dbUsername = 'root';
     $dbPassword ='';
-
+    $dbName = 'anodra';
     $conn = mysqli_connect($dpHost,$dbUsername,$dbPassword,$dbName);
+    if(!$conn){
+        die("Ma'lumotlar ba'zasi bilan ulanishda xatolik!");
+    }
 ?>

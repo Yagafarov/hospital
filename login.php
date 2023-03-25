@@ -16,17 +16,39 @@
     <!-- ########################## -->
     <section>
         <div class="container-sm">
+            
             <div class="row ">
-                <div class="col-sm-3"></div>
+                <div class="col-sm-3 mt-5">
+                <?php
+                if (isset($_POST["signIn"])) {
+                    $login = $_POST["login"];
+                    $password = $_POST["password"];
+                    require_once "./config.php";
+                    $sql = "SELECT * FROM users WHERE email = '$login' OR username = '$login'";
+                    $result = mysqli_query($conn,$sql);
+                    $user = mysqli_fetch_array($result,MYSQLI_ASSOC);
+                    if ($user) {
+                        if(password_verify($password,$user["password"])){
+                            header("Location: index.php");
+                            die();
+                        }else{
+                            echo "<div class='alert alert-danger'>Parol noto'g'ri</div>";
+                        }
+                    }else{
+                        echo "<div class='alert alert-danger'>Bunday foydalanuvchi tizimga mavjud emas<br><a href='./signup.php'>ro'yxatdan o'ting</a></div>";
+                    }
+                }
+            ?>
+                </div>
                 <div class="col-sm-6">
                     <form action="" method="post" class="form mx-3 shadow p-4 mb-5 bg-body rounded">
                         <h3 class="text-center mb-3 fw-semibold">Tizimga kirish</h3>
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="login">
                             <label for="floatingInput">elektron pochta yoki username</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
                             <label for="floatingPassword">Parol</label>
                         </div>
                         <div class="form-check mb-3">
@@ -36,7 +58,7 @@
                             </label>
                         </div>
                         <div class="mb-3">
-                            <input type="submit" value="KIRISH" class="btn btn-primary px-4 form-control fw-semibold">
+                            <input type="submit" value="KIRISH" class="btn btn-primary px-4 form-control fw-semibold" name="signIn">
                         </div>
                         <p class="text-center" >
                             <a href="#" class=" ">Parolni unutdingizmi?</a>
